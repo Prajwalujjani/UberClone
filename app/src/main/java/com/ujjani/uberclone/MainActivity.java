@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(MainActivity.this, "We have an anonymous user", Toast.LENGTH_SHORT).show();
                         user.put("as",edtDiverOrPassenger.getText().toString());
 
-                        user.saveInBackground(new SaveCallback() {
+                        user.saveInBackground( new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
                                 Intent intent = new Intent(MainActivity.this,PassengerActivity.class);
@@ -185,17 +185,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    private void transitionToPassengerActivity() {
 
-        if (ParseUser.getCurrentUser() != null) {
-
-            if (ParseUser.getCurrentUser().get("as").equals("passenger")) {
-
-                Intent intent = new Intent(MainActivity.this, PassengerActivity.class);
-                startActivity(intent);
-            }
-
-        }
-
-    }
 }
