@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             public void done(ParseException e) {
                                 Intent intent = new Intent(MainActivity.this,PassengerActivity.class);
                                 startActivity(intent);
+                                transitionToDriverRequestListActivity();
+                                transitionToPassengerActivity();
                             }
                         });
 
@@ -86,9 +88,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(ParseUser.getCurrentUser() != null){
 
-            Intent intent = new Intent(MainActivity.this,PassengerActivity.class);
-            startActivity(intent);
 
+            transitionToPassengerActivity();
+            transitionToDriverRequestListActivity();
 
         }
 
@@ -135,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 Toast.makeText(MainActivity.this, "Signed Up!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this,PassengerActivity.class);
                             startActivity(intent);
+                            transitionToPassengerActivity();
+                            transitionToDriverRequestListActivity();
 
                         }
                     });
@@ -144,9 +148,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void done(ParseUser user, ParseException e) {
 
-                            Toast.makeText(MainActivity.this, "Logged In!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this,PassengerActivity.class);
-                            startActivity(intent);
+                            transitionToPassengerActivity();
+                            transitionToDriverRequestListActivity();
                         }
                     });
                 }
@@ -183,6 +186,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void transitionToPassengerActivity() {
+
+        if (ParseUser.getCurrentUser() != null) {
+
+            if (ParseUser.getCurrentUser().get("as").equals("passenger")) {
+
+                Intent intent = new Intent(MainActivity.this, PassengerActivity.class);
+                startActivity(intent);
+            }
+
+        }
+
+    }
+
+    private void transitionToDriverRequestListActivity(){
+
+        if(ParseUser.getCurrentUser()!=null){
+            if(ParseUser.getCurrentUser().get("as").equals("driver")){
+
+                Intent intent = new Intent(this,DriverRequestListActivity.class);
+                startActivity(intent);
+            }
+
+        }
+
+
     }
 
 
