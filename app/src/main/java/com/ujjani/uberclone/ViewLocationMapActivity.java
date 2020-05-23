@@ -2,6 +2,8 @@ package com.ujjani.uberclone;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +18,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ViewLocationMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -40,6 +50,36 @@ public class ViewLocationMapActivity extends FragmentActivity implements OnMapRe
             @Override
             public void onClick(View v) {
 
+                ParseQuery<ParseObject> carRequestQuery = ParseQuery.getQuery("RequestCar");
+                carRequestQuery.whereEqualTo("username", getIntent().getStringExtra("rUserName"));
+                carRequestQuery.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+
+                        if(objects.size()>0 & e==null){
+
+                            for(ParseObject uberRequest: objects){
+                                uberRequest.put("driverOfMe", ParseUser.getCurrentUser().getUsername());
+                                uberRequest.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if(e==null){
+
+                                            Intent googleIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr="
+                                                    + getIntent().getDoubleExtra("dLatitude", 0 ) + ","
+                                                    + getIntent().getDoubleExtra("dLongitude",0) + "&"
+                                                    + "daddr=" + getIntent().getDoubleExtra("pLatitude",0)+ ","
+                                                    + getIntent().getDoubleExtra("pLongitude",0)));
+                                            startActivity(googleIntent);
+                                        }
+                                    }
+                                });
+                            }
+
+                        }
+
+                    }
+                });
             }
         });
     }
