@@ -78,6 +78,7 @@ public class PassengerActivity extends FragmentActivity implements OnMapReadyCal
 
         mapFragment.getMapAsync(this);
 
+
         ParseQuery<ParseObject> carRequestQuery = ParseQuery.getQuery("RequestCar");
         carRequestQuery.whereEqualTo("username",ParseUser.getCurrentUser().getUsername());
         carRequestQuery.findInBackground(new FindCallback<ParseObject>() {

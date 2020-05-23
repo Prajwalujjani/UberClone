@@ -27,44 +27,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button btnSignUpLogin, btnOneTimeLogin;
     private RadioButton driverRadioButton, passengerRadioButton;
-    private EditText edtUserName, edtPassword, edtDiverOrPassenger;
+    private EditText edtUserName, edtPassword, edtDriverOrPassenger;
 
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
 
-        if(edtDiverOrPassenger.getText().toString().equals("Driver") || edtDiverOrPassenger.getText().toString().equals("Passenger")){
-
+        if (edtDriverOrPassenger.getText().toString().equals("driver") || edtDriverOrPassenger.getText().toString().equals("passenger")) {
 
             if (ParseUser.getCurrentUser() == null) {
-
                 ParseAnonymousUtils.logIn(new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException e) {
-                    if(user!= null && e == null){
+                        if (user != null && e == null) {
 
-                        Toast.makeText(MainActivity.this, "We have an anonymous user", Toast.LENGTH_SHORT).show();
-                        user.put("as",edtDiverOrPassenger.getText().toString());
+                            Toast.makeText(MainActivity.this, "We have an anonymous user", Toast.LENGTH_SHORT).show();
 
-                        user.saveInBackground( new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                Intent intent = new Intent(MainActivity.this,PassengerActivity.class);
-                                startActivity(intent);
-                                transitionToDriverRequestListActivity();
-                                transitionToPassengerActivity();
-                            }
-                        });
 
-                    }
+                            user.put("as", edtDriverOrPassenger.getText().toString());
+
+                            user.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    transitionToPassengerActivity();
+                                    transitionToDriverRequestListActivity();
+                                }
+                            });
+                        }
                     }
                 });
-
             }
-
-
+        } else {
+            Toast.makeText(MainActivity.this, "Are you a driver or a passenger?", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+
+
 
     }
 
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         Parse.enableLocalDatastore(MainActivity.this);
+
         Parse.initialize(new Parse.Configuration.Builder(MainActivity.this)
                 .applicationId("OCmbEPW5KmQzXUvMzK5EYcXFaFYClhHK4wrsHhqM")
                 .clientKey("V7GwTw2SJh4Kgnaf1EAXRB9j2Gxj2oJ9tQpc9oLg")
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         passengerRadioButton = findViewById(R.id.rdbPassenger);
         edtUserName = findViewById(R.id.edtUserName);
         edtPassword = findViewById(R.id.edtPassword);
-        edtDiverOrPassenger = findViewById(R.id.edtDorP);
+        edtDriverOrPassenger = findViewById(R.id.edtDorP);
 
         btnOneTimeLogin.setOnClickListener(this);
 
