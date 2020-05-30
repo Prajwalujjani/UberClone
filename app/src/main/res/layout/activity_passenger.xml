@@ -24,6 +24,12 @@
         android:text="Request a car" />
 
     <Button
+        android:id="@+id/btnBeep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="beep beep!" />
+
+    <Button
         android:id="@+id/btnLogOutPassenger"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

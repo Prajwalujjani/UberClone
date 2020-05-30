@@ -45,6 +45,7 @@ public class ViewLocationMapActivity extends FragmentActivity implements OnMapRe
         mapFragment.getMapAsync(this);
 
         btnRide = findViewById(R.id.btnGiveRide);
+        btnRide.setText("I want to give " + getIntent().getStringExtra("rUserName") + " a ride!");
 
         btnRide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +60,9 @@ public class ViewLocationMapActivity extends FragmentActivity implements OnMapRe
                         if(objects.size()>0 & e==null){
 
                             for(ParseObject uberRequest: objects){
+
+                                uberRequest.put("requestAccepted",true);
+
                                 uberRequest.put("driverOfMe", ParseUser.getCurrentUser().getUsername());
                                 uberRequest.saveInBackground(new SaveCallback() {
                                     @Override
